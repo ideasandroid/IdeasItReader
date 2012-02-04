@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ideasrss update="">
+	<type id="1" name="IT新闻" remark="最新最快的IT资讯">
+		<channel typeId="1" title="cnBeta" link="" url="http://www.cnbeta.com/backend.php" description="" pubDate="Fri, 12 Aug 2010 14:18:28 GMT" language="" copyright="" lastUpdateDate="Fri, 12 Aug 2010 14:18:28 GMT" /> 
+		<channel typeId="1" title="engadget" link="" url="http://cn.engadget.com/rss.xml" description="" pubDate="Fri, 12 Aug 2009 14:18:28 GMT" language="" copyright="" lastUpdateDate="Fri, 12 Aug 2009 14:18:28 GMT" />
+	</type>
+</ideasrss> 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical|center_horizontal"
+    android:background="@drawable/itemshape"
+    >
+<ImageView
+android:id="@+id/readImg"
+android:layout_height="wrap_content"
+android:layout_width="wrap_content"
+android:layout_alignParentLeft="true"
+android:layout_alignParentTop="true"
+android:layout_alignParentBottom="true"
+/>
+<TextView 
+android:id="@+id/title"
+android:layout_alignParentTop="true"
+android:layout_toRightOf="@id/readImg"
+android:layout_width="fill_parent"
+android:textSize="16px"
+android:paddingLeft="3px"
+android:paddingRight="5px"
+android:paddingTop="0px"
+android:paddingBottom="0px"
+android:textColor="@drawable/black"
+    android:layout_height="wrap_content"
+/>
+<TextView 
+android:id="@+id/sourceAndDateInfo"
+android:layout_below="@id/title"
+android:layout_toRightOf="@id/readImg"
+android:layout_alignParentBottom="true"
+android:layout_width="fill_parent"
+android:textSize="14px"
+android:paddingLeft="3px"
+android:paddingRight="5px"
+android:paddingTop="0px"
+android:paddingBottom="0px"
+android:text="ideasAndroid"
+android:textColor="@drawable/gray"
+android:layout_height="wrap_content"
+/>
+</RelativeLayout>
