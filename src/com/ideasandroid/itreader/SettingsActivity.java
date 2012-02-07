@@ -23,13 +23,13 @@ public class SettingsActivity extends PreferenceActivity implements
 		settings = getPreferenceManager().getSharedPreferences();
 		timeoutReaded=(EditTextPreference)findPreference("ideasrss.timeout.readed");
 		timeoutReaded.setOnPreferenceChangeListener(this);
-		timeoutReaded.setSummary(settings.getString("ideasrss.timeout.readed","2")+"ÃÏ");
+		timeoutReaded.setSummary(settings.getString("ideasrss.timeout.readed","2")+"Â§©");
 		timeoutNoReaded=(EditTextPreference)findPreference("ideasrss.timeout.noreaded");
 		timeoutNoReaded.setOnPreferenceChangeListener(this);
-		timeoutNoReaded.setSummary(settings.getString("ideasrss.timeout.noreaded","4")+"ÃÏ");
+		timeoutNoReaded.setSummary(settings.getString("ideasrss.timeout.noreaded","4")+"Â§©");
 		refreshRate=(EditTextPreference)findPreference("ideasrss.refresh.rate");
 		refreshRate.setOnPreferenceChangeListener(this);
-		refreshRate.setSummary(settings.getString("ideasrss.refresh.rate","1")+"–° ±");
+		refreshRate.setSummary(settings.getString("ideasrss.refresh.rate","1")+"Â∞èÊó∂");
 	}
 
 	@Override
@@ -44,11 +44,11 @@ public class SettingsActivity extends PreferenceActivity implements
 	public boolean onPreferenceChange(Preference preference, Object newValue) {
 		// TODO Auto-generated method stub
 		if(preference.getKey().equals("ideasrss.timeout.readed")){
-			timeoutReaded.setSummary(newValue+"ÃÏ");
+			timeoutReaded.setSummary(newValue+"Â§©");
 		}else if(preference.getKey().equals("ideasrss.timeout.noreaded")){
-			timeoutNoReaded.setSummary(newValue+"ÃÏ");
+			timeoutNoReaded.setSummary(newValue+"Â§©");
 		}else if(preference.getKey().equals("ideasrss.refresh.rate")){
-			refreshRate.setSummary(newValue+"–° ±");
+			refreshRate.setSummary(newValue+"Â∞èÊó∂");
 		}
 		return true;
 	}

@@ -18,7 +18,7 @@
     <string name="mbt_tab_cooperation">合作</string>
     <string name="mbt_tab_thanks">感谢</string>
     <string name="mbt_about">\tIT新闻阅读器是一款为您的出行量身定做的移动IT新闻终端软件。随时随地打开手机就能看到您想看的IT新闻。\n\n\t开发团队：IdeasAndroid\n\n\tEmail:service@ideasandroid.com\n\n\t网址:<a href="http://www.ideasandroid.com">http://www.ideasandroid.com</a></string>
-    <string name="mbt_partner">\t IdeasAndroid团队提供如下服务：\n\t 1、技术培训。\n\t 2、各种移动应用定制开发。 \n\n\t本软件提供定制开发服务，如果您的站点需要给用户提供一个移动终端(手机、ipad)的阅读器，可通过以下方式联系我们给您进行定制开发。\n\n\t手机：18600017668\n\n\tEmail:service@ideasandroid.com\n\n\t网址:<a href="http://www.ideasandroid.com">http://www.ideasandroid.com</a></string>
+    <string name="mbt_partner">\t IdeasAndroid团队提供如下服务：\n\t 1、技术培训。\n\t 2、各种移动应用定制开发。 \n\n\t本软件提供定制开发服务，如果您的站点需要给用户提供一个移动终端(手机、ipad)的阅读器，可通过以下方式联系我们给您进行定制开发。\n\n\tEmail:service@ideasandroid.com\n\n\t网址:<a href="http://www.ideasandroid.com">http://www.ideasandroid.com</a></string>
     <string name="mbt_thanks">\tideasandroid开发团队全体开发人员在此对所有合作伙伴表示忠心的感谢！对使用我们软件的您表示感谢！\n\n\t合作伙伴：\n\n\tGoogle:<a href="http://www.google.com/">http://www.google.com/</a>\n\t</string>
 	<string name="refresh_rss_data_service">refresh_rss_data_service</string>
 </resources>

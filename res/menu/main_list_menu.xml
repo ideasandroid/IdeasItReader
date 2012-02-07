@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/menu_about"
+          android:icon="@drawable/ic_menu_info_details"
+          android:title="关于"
+          android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/menu_setting"
+          android:icon="@drawable/ic_menu_manage"
+          android:title="设置"
+          android:showAsAction="always" />
+    <item android:id="@+id/menu_refresh"
+          android:icon="@drawable/ic_menu_refresh"
+          android:title="更新"
+          android:showAsAction="always" />
+    <item android:id="@+id/menu_exit"
+          android:icon="@drawable/ic_menu_close_clear_cancel"
+          android:title="退出"
+          android:showAsAction="always" />
+
+</menu>

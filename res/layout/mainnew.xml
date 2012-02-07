@@ -4,17 +4,11 @@
 	android:background="#FFFFFF"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<LinearLayout android:id="@+id/adsbar" android:layout_width="fill_parent"  android:orientation="vertical"
-		android:layout_height="wrap_content" android:layout_alignParentBottom="true">
-	<WebView android:id="@+id/googleAdsWebView"
-        android:layout_width="fill_parent"
-        android:layout_height="75px"/>
-    <com.wooboo.adlib_android.WoobooAdView
+    <com.wooboo.adlib_android.WoobooAdView android:layout_alignParentBottom="true"
 		android:id="@+id/woobooAdbar" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" 
 		adsdk:testing="false" adsdk:backgroundColor="#FFFFFF" adsdk:textColor="#000000"
 		adsdk:refreshInterval="20" />
-	</LinearLayout>
 	 <!-- 
 		<LinearLayout
     android:orientation="vertical"
@@ -25,12 +19,12 @@
 	<ListView android:id="@android:id/list"
 	android:divider="@drawable/list_divider"
 		android:dividerHeight="1dip"
-		android:layout_alignParentTop="true" android:layout_above="@id/adsbar"
+		android:layout_alignParentTop="true" android:layout_above="@id/woobooAdbar"
 		android:layout_width="fill_parent"
         android:layout_height="wrap_content"
 		android:cacheColorHint="#FFFFFF">
 	</ListView>
 	<TextView android:id="@android:id/empty" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_below="@android:id/list"
-		android:layout_above="@id/adsbar" android:text="暂无资讯" />
+		android:layout_above="@id/woobooAdbar" android:text="暂无资讯" />
 </RelativeLayout>

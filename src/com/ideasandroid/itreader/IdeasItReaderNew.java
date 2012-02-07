@@ -24,15 +24,14 @@ import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -58,8 +57,6 @@ public class IdeasItReaderNew extends ListActivity {
 	private final static int SHARE = 100;
 
 	private static WoobooAdView woobooAdView;
-	private WebView googleAdsWebView = null;
-	private LinearLayout adsbar = null;
 	
 	private boolean isRefresh=false;
 
@@ -69,9 +66,7 @@ public class IdeasItReaderNew extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainnew);
-		googleAdsWebView = (WebView) findViewById(R.id.googleAdsWebView);
 		woobooAdView = (WoobooAdView) findViewById(R.id.woobooAdbar);
-		adsbar = (LinearLayout) findViewById(R.id.adsbar);
 		// getWindow().setLayout(100, 200);
 		registerForContextMenu(getListView());
 		progressdialog = new ProgressDialog(this);
@@ -86,7 +81,7 @@ public class IdeasItReaderNew extends ListActivity {
 				progressdialog.setMessage(getText(R.string.loading_init));
 				new SystemInitTask(progressdialog, this).execute();
 			} else {
-				progressdialog.setMessage("ÔİÎŞÍøÂçÁ¬½Ó£¡ÇëÔÚÓĞÍøÂçÁ¬½ÓÊ±Ê¹ÓÃ±¾Èí¼ş£¡");
+				progressdialog.setMessage("æš‚æ— ç½‘ç»œè¿æ¥ï¼è¯·åœ¨æœ‰ç½‘ç»œè¿æ¥æ—¶ä½¿ç”¨æœ¬è½¯ä»¶ï¼");
 				progressdialog.setCancelable(true);
 				progressdialog.setButton(getText(R.string.process_cancl),
 						new DialogInterface.OnClickListener() {
@@ -101,21 +96,6 @@ public class IdeasItReaderNew extends ListActivity {
 		} else {
 			progressdialog.setMessage(getText(R.string.loading_data));
 			new SystemInitTask(progressdialog, this).execute();
-		}
-		boolean adsshow = getSharedPreferences("ideasrss",
-				Context.MODE_PRIVATE).getBoolean("adsshow", false);
-		Editor edit = getSharedPreferences("ideasrss",
-				Context.MODE_PRIVATE).edit();
-		edit.putBoolean("adsshow", !adsshow);
-		edit.commit();
-		if(adsshow){
-			googleAdsWebView.getSettings().setJavaScriptEnabled(true);
-			googleAdsWebView
-					.loadUrl("http://ideasapi.sinaapp.com/ad/googleads.html");
-			//
-			adsbar.removeView(woobooAdView);
-		}else{ 
-			adsbar.removeView(googleAdsWebView);
 		}
 	}
 	
@@ -136,7 +116,7 @@ public class IdeasItReaderNew extends ListActivity {
 	}
 
 	private void startBGService() {
-		// 1Ğ¡Ê±´Ó·şÎñÆ÷ÉÏ»ñÈ¡Ò»´Î×îĞÂµÄRSS
+		// 1å°æ—¶ä»æœåŠ¡å™¨ä¸Šè·å–ä¸€æ¬¡æœ€æ–°çš„RSS
 		long firstime = SystemClock.elapsedRealtime() + 60 * 1000 * 60;
 		Intent refreshDataIntent = new Intent(IdeasItReaderNew.this,
 				RefreshDataService.class);
@@ -162,37 +142,30 @@ public class IdeasItReaderNew extends ListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		boolean result = super.onCreateOptionsMenu(menu);
-		menu.add(0, ABOUT_MENU, 0, R.string.appMenu_about).setIcon(
-				R.drawable.menu_icon_about);
-		menu.add(0, SETTINGS_MENU, 0, R.string.appMenu_settings).setIcon(
-				R.drawable.menu_icon_settings);
-		menu.add(0, REFRESH_MENU, 0, R.string.appMenu_refresh).setIcon(
-                R.drawable.menu_icon_refresh);
-		menu.add(0, EXIT_MENU, 0, R.string.appMenu_exit).setIcon(
-				R.drawable.menu_icon_exit);
-		return result;
+		 MenuInflater inflater = getMenuInflater();
+		    inflater.inflate(R.menu.main_list_menu, menu);
+		    return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case ABOUT_MENU:
+		case R.id.menu_about:
 			Intent ab = new Intent(this, AboutActivity.class);
 			ab.putExtra("tabIndex", 0);
 			startActivity(ab);
 			return true;
-		case SETTINGS_MENU:
+		case R.id.menu_setting:
 			Intent st = new Intent(this, SettingsActivity.class);
 			startActivity(st);
 			return true;
-		case REFRESH_MENU:
+		case R.id.menu_refresh:
 		    isRefresh=true;
 		    progressdialog=new ProgressDialog(this);
 		    progressdialog.setMessage(getText(R.string.loading_data));
             new SystemInitTask(progressdialog, this).execute();
             return true;
-		case EXIT_MENU:
+		case R.id.menu_exit:
 			finish();
 			return true;
 		}
@@ -203,11 +176,11 @@ public class IdeasItReaderNew extends ListActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		menu.setHeaderTitle("²Ù×÷");
-		menu.add(0, VIEW_ID, 0, "²é¿´È«ÎÄ");
-		menu.add(0, MARKED_AS_ALLREDEAD, 0, "È«²¿±ê¼ÇÎªÒÑ¶Á");
-		menu.add(0, DELETE_ID, 0, "É¾³ı");
-		menu.add(0, SHARE, 0, "·ÖÏíĞÂÎÅ");
+		menu.setHeaderTitle("æ“ä½œ");
+		menu.add(0, VIEW_ID, 0, "æŸ¥çœ‹å…¨æ–‡");
+		menu.add(0, MARKED_AS_ALLREDEAD, 0, "å…¨éƒ¨æ ‡è®°ä¸ºå·²è¯»");
+		menu.add(0, DELETE_ID, 0, "åˆ é™¤");
+		menu.add(0, SHARE, 0, "åˆ†äº«æ–°é—»");
 		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 
@@ -222,6 +195,7 @@ public class IdeasItReaderNew extends ListActivity {
 		case VIEW_ID:
 			Intent i = new Intent(this, WebActivity.class);
 			i.putExtra("targetUrl", rssItem.getLink());
+			i.putExtra("shareTitle", rssItem.getTitle());
 			startActivity(i);
 			return true;
 		case DELETE_ID:
@@ -238,9 +212,9 @@ public class IdeasItReaderNew extends ListActivity {
 			return true;
 		case SHARE:
 			Intent it = new Intent(Intent.ACTION_SEND);   
-			it.putExtra(Intent.EXTRA_TEXT,"ÄúºÃ£¬Õâ¸öĞÂÎÅ²»´í£¬¿´Ò»¿´°É£¡"+rssItem.getLink());   
+			it.putExtra(Intent.EXTRA_TEXT,"æ‚¨å¥½ï¼Œè¿™ä¸ªæ–°é—»ä¸é”™ï¼Œçœ‹ä¸€çœ‹å§ï¼"+rssItem.getLink());   
 			it.setType("text/plain");   
-			startActivity(Intent.createChooser(it, "·ÖÏí·½Ê½"));
+			startActivity(Intent.createChooser(it, "åˆ†äº«æ–¹å¼"));
 			return true;
 		default:
 			return super.onContextItemSelected(item);
