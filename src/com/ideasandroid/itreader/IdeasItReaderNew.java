@@ -1,6 +1,14 @@
 package com.ideasandroid.itreader;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.ActivityManager;
 import android.app.AlarmManager;
@@ -14,12 +22,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
+import android.text.Html.ImageGetter;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -34,6 +47,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 import com.commonsware.cwac.cache.WebImageCache;
@@ -41,33 +55,17 @@ import com.ideasandroid.itreader.provider.NetworkStateCheckUtil;
 import com.ideasandroid.itreader.provider.RefreshDataService;
 import com.ideasandroid.rsslib4android.RSSFactory;
 import com.ideasandroid.rsslib4android.RSSItem;
-import com.wooboo.adlib_android.WoobooAdView;
 
 public class IdeasItReaderNew extends ListActivity {
 
 	ProgressDialog progressdialog = null;
-	private final int ABOUT_MENU = 1;
-	private final int EXIT_MENU = 2;
-	private final int SETTINGS_MENU = 3;
-	private final int REFRESH_MENU = 4;
 	SpeechListAdapter adapt = null;
-	private final static int DELETE_ID = 2;
-	private final static int VIEW_ID = 1;
-	private final static int MARKED_AS_ALLREDEAD = 3;
-	private final static int SHARE = 100;
-
-	private static WoobooAdView woobooAdView;
-	
 	private boolean isRefresh=false;
-
-	// ListView rssList = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainnew);
-		woobooAdView = (WoobooAdView) findViewById(R.id.woobooAdbar);
-		// getWindow().setLayout(100, 200);
 		registerForContextMenu(getListView());
 		progressdialog = new ProgressDialog(this);
 		if (isRunning("com.ideasandroid.itreader.service.NewRSSNotifyService")) {
@@ -81,7 +79,7 @@ public class IdeasItReaderNew extends ListActivity {
 				progressdialog.setMessage(getText(R.string.loading_init));
 				new SystemInitTask(progressdialog, this).execute();
 			} else {
-				progressdialog.setMessage("暂无网络连接！请在有网络连接时使用本软件！");
+				progressdialog.setMessage(getString(R.string.net_exception));
 				progressdialog.setCancelable(true);
 				progressdialog.setButton(getText(R.string.process_cancl),
 						new DialogInterface.OnClickListener() {
@@ -97,6 +95,8 @@ public class IdeasItReaderNew extends ListActivity {
 			progressdialog.setMessage(getText(R.string.loading_data));
 			new SystemInitTask(progressdialog, this).execute();
 		}
+		
+		getActionBar().setHomeButtonEnabled(true);
 	}
 	
 	private WebImageCache getCache() {
@@ -116,7 +116,7 @@ public class IdeasItReaderNew extends ListActivity {
 	}
 
 	private void startBGService() {
-		// 1小时从服务器上获取一次最新的RSS
+		// get news from server 1times/hour
 		long firstime = SystemClock.elapsedRealtime() + 60 * 1000 * 60;
 		Intent refreshDataIntent = new Intent(IdeasItReaderNew.this,
 				RefreshDataService.class);
@@ -135,8 +135,6 @@ public class IdeasItReaderNew extends ListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		// TODO Auto-generated method stub
-		Log.d("ItemClick:", "ItemClicked");
 		((SpeechListAdapter) getListAdapter()).toggle(position);
 	}
 
@@ -176,12 +174,9 @@ public class IdeasItReaderNew extends ListActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		menu.setHeaderTitle("操作");
-		menu.add(0, VIEW_ID, 0, "查看全文");
-		menu.add(0, MARKED_AS_ALLREDEAD, 0, "全部标记为已读");
-		menu.add(0, DELETE_ID, 0, "删除");
-		menu.add(0, SHARE, 0, "分享新闻");
 		super.onCreateContextMenu(menu, v, menuInfo);
+		 MenuInflater inflater = getMenuInflater();
+		 inflater.inflate(R.menu.main_list_context_menu, menu);
 	}
 
 	@Override
@@ -192,29 +187,29 @@ public class IdeasItReaderNew extends ListActivity {
 		Log.d("selectedItemTitel:", rssItem.getTitle());
 
 		switch (item.getItemId()) {
-		case VIEW_ID:
+		case R.id.cmenu_view_all_content:
 			Intent i = new Intent(this, WebActivity.class);
 			i.putExtra("targetUrl", rssItem.getLink());
 			i.putExtra("shareTitle", rssItem.getTitle());
 			startActivity(i);
 			return true;
-		case DELETE_ID:
+		case R.id.cmenu_delete:
 			getContentResolver().delete(
 					Uri.withAppendedPath(RSSItem.CONTENT_URL,
 							String.valueOf(rssItem.getId())), null, null);
 			adapt.initRss();
 			return true;
-		case MARKED_AS_ALLREDEAD:
+		case R.id.cmenu_mark_all_readed:
 			ContentValues v = new ContentValues();
 			v.put(RSSItem.ISREADED, 1);
 			getContentResolver().update(RSSItem.CONTENT_URL, v, null, null);
 			adapt.initRss();
 			return true;
-		case SHARE:
+		case R.id.cmenu_share:
 			Intent it = new Intent(Intent.ACTION_SEND);   
-			it.putExtra(Intent.EXTRA_TEXT,"您好，这个新闻不错，看一看吧！"+rssItem.getLink());   
+			it.putExtra(Intent.EXTRA_TEXT,rssItem.getTitle()+"->"+rssItem.getLink()+getString(R.string.share_itnewsreader_info));   
 			it.setType("text/plain");   
-			startActivity(Intent.createChooser(it, "分享方式"));
+			startActivity(Intent.createChooser(it,getString(R.string.share_type)));
 			return true;
 		default:
 			return super.onContextItemSelected(item);
@@ -232,7 +227,6 @@ public class IdeasItReaderNew extends ListActivity {
 
 	@Override
 	public void finish() {
-		// TODO Auto-generated method stub
 		super.finish();
 	}
 
@@ -243,7 +237,6 @@ public class IdeasItReaderNew extends ListActivity {
 	}
 
 	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -325,7 +318,8 @@ public class IdeasItReaderNew extends ListActivity {
 				vh = (ViewHolder) sv.getTag();
 			}
 			vh.getRssTitle().setText(Html.fromHtml(item.getTitle()));
-			vh.getRssContent().setText(Html.fromHtml(item.getDescription()));
+			URLImageParser p = new URLImageParser(vh.getRssContent(), IdeasItReaderNew.this);
+			vh.getRssContent().setText(Html.fromHtml(item.getDescription(),p,null));
 			vh.getRssContent().setVisibility(
 					mExpanded[position] ? View.VISIBLE : View.GONE);
 			if (item.getIsReaded() == 1) {
@@ -334,6 +328,105 @@ public class IdeasItReaderNew extends ListActivity {
 				vh.getStatusIcon().setImageResource(R.drawable.rss_noreaded);
 			}
 			return sv;
+		}
+		
+		ImageGetter imgGetter = new Html.ImageGetter() {
+			public Drawable getDrawable(String source) {
+				Drawable drawable = null;
+				Log.d("Image Path", source);
+				URL url;
+				try {
+					url = new URL(source);
+					drawable = Drawable.createFromStream(url.openStream(), "");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return drawable;
+			}
+		};
+		
+		public class URLDrawable extends BitmapDrawable {
+		    // the drawable that you need to set, you could set the initial drawing
+		    // with the loading image if you need to
+		    protected Drawable drawable = null;
+
+		    @Override
+		    public void draw(Canvas canvas) {
+		        // override the draw to facilitate refresh function later
+		        if(drawable != null) {
+		            drawable.draw(canvas);
+		        }
+		    }
+		}
+		
+		public class URLImageParser implements ImageGetter {
+		    Context c;
+		    View container;
+		    public URLImageParser(View t, Context c) {
+		        this.c = c;
+		        this.container = t;
+		    }
+
+		    public Drawable getDrawable(String source) {
+		        URLDrawable urlDrawable = new URLDrawable();
+		        urlDrawable.drawable = getResources().getDrawable(R.drawable.icon);
+		        ImageGetterAsyncTask asyncTask = 
+		            new ImageGetterAsyncTask( urlDrawable);
+		        asyncTask.execute(source);
+		        return urlDrawable;
+		    }
+
+		    public class ImageGetterAsyncTask extends AsyncTask<String, Void, Drawable>  {
+		        URLDrawable urlDrawable;
+
+		        public ImageGetterAsyncTask(URLDrawable d) {
+		            this.urlDrawable = d;
+		        }
+
+		        @Override
+		        protected Drawable doInBackground(String... params) {
+		            String source = params[0];
+		            return fetchDrawable(source);
+		        }
+
+		        @Override
+		        protected void onPostExecute(Drawable result) {
+		            // set the correct bound according to the result from HTTP call
+		            urlDrawable.setBounds(0, 0, 0 + result.getIntrinsicWidth(), 0 
+		                    + result.getIntrinsicHeight()); 
+
+		            // change the reference of the current drawable to the result
+		            // from the HTTP call
+		            urlDrawable.drawable = result;
+
+		            // redraw the image by invalidating the container
+		            URLImageParser.this.container.invalidate();
+		        }
+
+		        /***
+		         * Get the Drawable from URL
+		         * @param urlString
+		         * @return
+		         */
+		        public Drawable fetchDrawable(String urlString) {
+		            try {
+		                InputStream is = fetch(urlString);
+		                Drawable drawable = Drawable.createFromStream(is, "src");
+		                drawable.setBounds(0, 0, 0 + drawable.getIntrinsicWidth(), 0 
+		                      + drawable.getIntrinsicHeight()); 
+		                return drawable;
+		            } catch (Exception e) {
+		                return null;
+		            } 
+		        }
+
+		        private InputStream fetch(String urlString) throws MalformedURLException, IOException {
+		            DefaultHttpClient httpClient = new DefaultHttpClient();
+		            HttpGet request = new HttpGet(urlString);
+		            HttpResponse response = httpClient.execute(request);
+		            return response.getEntity().getContent();
+		        }
+		    }
 		}
 		
 

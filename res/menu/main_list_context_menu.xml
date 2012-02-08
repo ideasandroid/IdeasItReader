@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/cmenu_view_all_content"
+        android:title="查看全文"/>
+
+    <item
+        android:id="@+id/cmenu_mark_all_readed"
+        android:title="全部标记为已读"/>
+
+    <item
+        android:id="@+id/cmenu_delete"
+        android:title="删除"/>
+
+    <item
+        android:id="@+id/cmenu_share"
+        android:title="分享新闻"/>
+
+</menu>

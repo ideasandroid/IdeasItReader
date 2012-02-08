@@ -30,6 +30,7 @@ public class SettingsActivity extends PreferenceActivity implements
 		refreshRate=(EditTextPreference)findPreference("ideasrss.refresh.rate");
 		refreshRate.setOnPreferenceChangeListener(this);
 		refreshRate.setSummary(settings.getString("ideasrss.refresh.rate","1")+"小时");
+		getActionBar().setHomeButtonEnabled(true);
 	}
 
 	@Override

@@ -74,7 +74,7 @@ public class WebActivity extends Activity {
     
     private Intent createShareIntent() {
     	Intent it = new Intent(Intent.ACTION_SEND);   
-		it.putExtra(Intent.EXTRA_TEXT,shareTitle+targetUrl+"[IT新闻阅读器推荐资讯]");   
+		it.putExtra(Intent.EXTRA_TEXT,shareTitle+"->"+targetUrl+getString(R.string.share_itnewsreader_info));   
 		it.setType("text/plain");
         return it;
     }
