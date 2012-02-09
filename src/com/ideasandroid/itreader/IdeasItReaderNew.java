@@ -42,6 +42,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -64,6 +65,8 @@ public class IdeasItReaderNew extends ListActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+	    	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
+	                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainnew);
 		registerForContextMenu(getListView());
@@ -161,11 +164,8 @@ public class IdeasItReaderNew extends ListActivity {
 		    isRefresh=true;
 		    progressdialog=new ProgressDialog(this);
 		    progressdialog.setMessage(getText(R.string.loading_data));
-            new SystemInitTask(progressdialog, this).execute();
-            return true;
-		case R.id.menu_exit:
-			finish();
-			return true;
+                    new SystemInitTask(progressdialog, this).execute();
+                    return true;
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -233,7 +233,7 @@ public class IdeasItReaderNew extends ListActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		android.os.Process.killProcess(android.os.Process.myPid());
+		//android.os.Process.killProcess(android.os.Process.myPid());
 	}
 
 	public void onNothingSelected(AdapterView<?> arg0) {

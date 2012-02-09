@@ -6,6 +6,7 @@ import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 
 public class SettingsActivity extends PreferenceActivity implements
 		Preference.OnPreferenceChangeListener {
@@ -17,6 +18,8 @@ public class SettingsActivity extends PreferenceActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+	    	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
+	                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		getPreferenceManager().setSharedPreferencesName("ideasrss");
 		addPreferencesFromResource(R.xml.preferences);

@@ -3,6 +3,7 @@ package com.ideasandroid.itreader;
 
 import android.app.TabActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ public class AboutActivity extends TabActivity {
 	TabHost mTabHost=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+	    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,   
+	                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about);
 		mTabHost = getTabHost();
