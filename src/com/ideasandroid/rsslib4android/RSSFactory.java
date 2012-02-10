@@ -51,17 +51,14 @@ public class RSSFactory {
 	public void init(Context context) {
 		RssDbUtil util=new RssDbUtil(context);
 		Log.d("RSS init", String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH-mm-ss-SSS").format(new Date())));
-		// �Ȳ������ǰ���Ѷ�����
 		SharedPreferences settings = context.getSharedPreferences("ideasrss",
 				Context.MODE_PRIVATE);
-		// ɾ���Ѷ���ʱ����
 		if (!settings.getString("ideasrss.timeout.readed", "2").equals("0")) {
 			String where = "julianday('now') - julianday(" + RSSItem.PUBDATE
 					+ ")>" + settings.getString("ideasrss.timeout.readed", "2")
 					+ " and " + RSSItem.ISREADED + " = 1";
 			util.deleteRssItems(where);
 		}
-		// ɾ��δ����ʱ����
 		if (!settings.getString("ideasrss.timeout.noreaded", "4").equals("0")) {
 			String where1 = "julianday('now') - julianday(" + RSSItem.PUBDATE
 					+ ")>"
@@ -69,7 +66,6 @@ public class RSSFactory {
 					+ " and " + RSSItem.ISREADED + " = 0";
 			util.deleteRssItems(where1);
 		}
-		// ���¸������
 		Log.d("RSS deleted", String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH-mm-ss-SSS").format(new Date())));
 		List<RSSChannel> list =util.queryRSSChannels(null);
 		for(RSSChannel channel:list){
@@ -112,10 +108,15 @@ public class RSSFactory {
 				String description = item.getString("description");
 				String pubDate = item.getString("pubDate");
 				//String guid = item.getString("guid");
-				//description=HtmlRegexpUtil.fiterHtmlTag(description,"img");
-				//description = description.replaceAll("</img>", "");
-				//description=HtmlRegexpUtil.fiterHtmlTag(description, "IMG");
-				//description = description.replaceAll("</IMG>", "");
+				if(_url.equals("http://cn.engadget.com/rss.xml")){
+        				description=HtmlRegexpUtil.filterHtml(description);
+        				description=description.replaceAll("引用来源", "");
+        				description=description.replaceAll("此文章网址", "");
+        				description=description.replaceAll("转寄此文章", "");
+        				description=description.replaceAll("回应", "");
+        				description=description.replaceAll("&nbsp;", "");
+        				description=description.replaceAll("\\|", "");
+				}
 				
 				Date pd = null;
 				try {

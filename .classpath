@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="lib/CWAC-AdapterWrapper.jar"/>
 	<classpathentry kind="lib" path="lib/CWAC-Bus.jar"/>
 	<classpathentry kind="lib" path="lib/CWAC-Task.jar"/>
+	<classpathentry kind="lib" path="lib/android-support-v13.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
