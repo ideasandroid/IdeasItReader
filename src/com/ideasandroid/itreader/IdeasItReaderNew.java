@@ -160,6 +160,9 @@ public class IdeasItReaderNew extends ListActivity {
 			Intent st = new Intent(this, SettingsActivity.class);
 			startActivity(st);
 			return true;
+		case R.id.menu_share:
+			shareItReader(getText(R.string.itreader_share_info).toString());
+			return true;
 		case R.id.menu_refresh:
 		    isRefresh=true;
 		    progressdialog=new ProgressDialog(this);
@@ -206,14 +209,18 @@ public class IdeasItReaderNew extends ListActivity {
 			adapt.initRss();
 			return true;
 		case R.id.cmenu_share:
-			Intent it = new Intent(Intent.ACTION_SEND);   
-			it.putExtra(Intent.EXTRA_TEXT,rssItem.getTitle()+"->"+rssItem.getLink()+getString(R.string.share_itnewsreader_info));   
-			it.setType("text/plain");   
-			startActivity(Intent.createChooser(it,getString(R.string.share_type)));
+			shareItReader(rssItem.getTitle()+"->"+rssItem.getLink()+getString(R.string.share_itnewsreader_info));   
 			return true;
 		default:
 			return super.onContextItemSelected(item);
 		}
+	}
+	
+	private void shareItReader(String text){
+		Intent it = new Intent(Intent.ACTION_SEND);   
+		it.putExtra(Intent.EXTRA_TEXT,text);   
+		it.setType("text/plain");   
+		startActivity(Intent.createChooser(it,getString(R.string.share_type)));
 	}
 
 	@Override

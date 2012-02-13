@@ -20,4 +20,4 @@
 <!-- This screen consists of a single text field that
      displays our "Hello, World!" text. -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/text"
-    android:layout_width="match_parent" android:layout_height="match_parent"/>
+    android:layout_width="match_parent" android:layout_height="match_parent" android:autoLink="all" />

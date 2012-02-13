@@ -4,18 +4,24 @@
     <item
         android:id="@+id/menu_setting"
         android:icon="@drawable/ic_action_edit"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom|withText"
         android:title="设置"/>
 
     <item
         android:id="@+id/menu_refresh"
         android:icon="@drawable/ic_action_refresh"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom|withText"
         android:title="更新"/>
+    
+    <item
+        android:id="@+id/menu_share"
+        android:icon="@drawable/ic_action_share"
+        android:showAsAction="ifRoom|withText"
+        android:title="分享"/>
 
     <item
         android:id="@+id/menu_about"
         android:icon="@drawable/ic_action_star"
-        android:showAsAction="ifRoom"
+        android:showAsAction="ifRoom|withText"
         android:title="关于"/>
 </menu>

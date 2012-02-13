@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">IT新闻阅读器</string>
-    <string name="loading_data">正在加载数据...</string>
-    <string name="loading_init">系统第一次初始化，需要等待1分钟左右，请稍候...</string>
+    <string name="loading_data">正在加载数据&#8230;</string>
+    <string name="loading_init">系统第一次初始化，需要等待1分钟左右，请稍候&#8230;</string>
     <string name="process_cancl">取消</string>
     <string name="net_exception">暂无网络连接！请在有网络连接时使用本软件！</string>
     
@@ -15,6 +15,7 @@
     <string name="newnews">有新的IT新闻</string>
     <string name="newnewsdesc">有新的新闻了！是不是看一看？</string>
     <string name="share_type">分享方式</string>
+    <string name="itreader_share_info">IT人士必备的新闻阅读器->IT新闻阅读器,下载地址:http://www.ideasandroid.com</string>
     <string name="share_itnewsreader_info">[IT新闻阅读器推荐资讯]</string>
     
     <string name="mbt_tab_about">关于</string>
