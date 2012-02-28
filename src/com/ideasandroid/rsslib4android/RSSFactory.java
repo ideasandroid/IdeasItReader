@@ -116,6 +116,8 @@ public class RSSFactory {
         				description=description.replaceAll("回应", "");
         				description=description.replaceAll("&nbsp;", "");
         				description=description.replaceAll("\\|", "");
+				}else{
+					description=HtmlRegexpUtil.filterHtml(description);
 				}
 				
 				Date pd = null;
