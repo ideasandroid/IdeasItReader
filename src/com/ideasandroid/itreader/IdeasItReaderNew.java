@@ -1,5 +1,6 @@
 package com.ideasandroid.itreader;
 
+import java.util.Date;
 import java.util.List;
 
 import android.app.ActivityManager;
@@ -32,7 +33,6 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -42,7 +42,6 @@ import com.ideasandroid.itreader.provider.NetworkStateCheckUtil;
 import com.ideasandroid.itreader.provider.RefreshDataService;
 import com.ideasandroid.rsslib4android.RSSFactory;
 import com.ideasandroid.rsslib4android.RSSItem;
-import com.wooboo.adlib_android.WoobooAdView;
 
 public class IdeasItReaderNew extends ListActivity {
 
@@ -56,10 +55,7 @@ public class IdeasItReaderNew extends ListActivity {
 	private final static int VIEW_ID = 1;
 	private final static int MARKED_AS_ALLREDEAD = 3;
 	private final static int SHARE = 100;
-
-	private static WoobooAdView woobooAdView;
 	private WebView googleAdsWebView = null;
-	private LinearLayout adsbar = null;
 	
 	private boolean isRefresh=false;
 
@@ -70,8 +66,6 @@ public class IdeasItReaderNew extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mainnew);
 		googleAdsWebView = (WebView) findViewById(R.id.googleAdsWebView);
-		woobooAdView = (WoobooAdView) findViewById(R.id.woobooAdbar);
-		adsbar = (LinearLayout) findViewById(R.id.adsbar);
 		// getWindow().setLayout(100, 200);
 		registerForContextMenu(getListView());
 		progressdialog = new ProgressDialog(this);
@@ -108,15 +102,10 @@ public class IdeasItReaderNew extends ListActivity {
 				Context.MODE_PRIVATE).edit();
 		edit.putBoolean("adsshow", !adsshow);
 		edit.commit();
-		if(adsshow){
-			googleAdsWebView.getSettings().setJavaScriptEnabled(true);
-			googleAdsWebView
-					.loadUrl("http://ideasapi.sinaapp.com/ad/googleads.html");
-			//
-			adsbar.removeView(woobooAdView);
-		}else{ 
-			adsbar.removeView(googleAdsWebView);
-		}
+		googleAdsWebView.getSettings().setJavaScriptEnabled(true);
+		googleAdsWebView
+					.loadUrl("http://ideasapi.sinaapp.com/ad/googleads.html?timestamp="+new Date().getTime());
+
 	}
 	
 	private WebImageCache getCache() {

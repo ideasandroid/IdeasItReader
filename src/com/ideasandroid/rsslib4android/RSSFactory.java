@@ -94,6 +94,7 @@ public class RSSFactory {
 		String url = "http://ideasapi.sinaapp.com/rss/rss2json";
 		Map<String, String> parasMap = new HashMap<String, String>();
 		parasMap.put("url", _url);
+		parasMap.put("lastUpdateTime", lastUpdateTime.toGMTString());
 		String jsonString = null;
 		try {
 			jsonString = HttpRestClient.post(url).use(client).charset("UTF-8")

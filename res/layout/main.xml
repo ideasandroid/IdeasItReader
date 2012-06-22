@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:adsdk="http://schemas.android.com/apk/res/com.ideasandroid.itreader"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<Gallery android:id="@+id/rssTypegallery" android:layout_width="fill_parent"
 		android:layout_alignParentTop="true" android:layout_height="wrap_content"
 		android:gravity="center_vertical" android:spacing="16dp" />
-	<com.wooboo.adlib_android.WoobooAdView
-		android:id="@+id/woobooAdbar" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_alignParentBottom="true"
-		adsdk:testing="false" adsdk:backgroundColor="#9bc368" adsdk:textColor="#FFFFFFFF"
-		adsdk:refreshInterval="20" />
 	<ExpandableListView android:id="@android:id/list"
-		android:layout_below="@id/rssTypegallery" android:layout_above="@id/woobooAdbar"
+		android:layout_below="@id/rssTypegallery" 
 		android:indicatorLeft="34px" android:groupIndicator="@drawable/itemicon"
 		android:choiceMode="multipleChoice" android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
 	</ExpandableListView>
-	<TextView android:id="@android:id/empty" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_below="@android:id/list"
-		android:layout_above="@id/woobooAdbar" android:text="暂无资讯" />
 </RelativeLayout>
