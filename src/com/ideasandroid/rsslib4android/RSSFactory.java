@@ -94,7 +94,9 @@ public class RSSFactory {
 		String url = "http://ideasapi.sinaapp.com/rss/rss2json";
 		Map<String, String> parasMap = new HashMap<String, String>();
 		parasMap.put("url", _url);
-		parasMap.put("lastUpdateTime", lastUpdateTime.toGMTString());
+		Log.d("lastUpdateTime",lastUpdateTime.toGMTString());
+		parasMap.put("lastUpdateTime", String.valueOf(lastUpdateTime.getTime()));
+		parasMap.put("appversion", Constants.getAppVersionName(context));
 		String jsonString = null;
 		try {
 			jsonString = HttpRestClient.post(url).use(client).charset("UTF-8")
@@ -102,7 +104,7 @@ public class RSSFactory {
 		} catch (Exception e) {
 			Log.d("", e.toString());
 		}
-		if(jsonString!=null){
+		if(jsonString!=null && !"\"null\"".equals(jsonString)){
 			RssDbUtil util=new RssDbUtil(context);
 			List<ContentValues> needInsertItems=new ArrayList<ContentValues>();
 			JSONArray items=new JSONArray(jsonString);

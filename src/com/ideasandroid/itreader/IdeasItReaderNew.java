@@ -37,7 +37,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
-import com.commonsware.cwac.cache.WebImageCache;
 import com.ideasandroid.itreader.provider.NetworkStateCheckUtil;
 import com.ideasandroid.itreader.provider.RefreshDataService;
 import com.ideasandroid.rsslib4android.RSSFactory;
@@ -107,10 +106,6 @@ public class IdeasItReaderNew extends ListActivity {
 					.loadUrl("http://ideasapi.sinaapp.com/ad/googleads.html?timestamp="+new Date().getTime());
 
 	}
-	
-	private WebImageCache getCache() {
-        return(((Application)getApplication()).getCache());     
-    }
 
 	private boolean isRunning(String serviceName) {
 		ActivityManager mActivityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
